@@ -1,7 +1,15 @@
 spring:
   application:
     name: ai-agent
-# springdoc-openapi????
+  profiles:
+    active: local
+  ai:
+    dashscope:
+      api-key: sk-357fc9ea781b48019e2a280a50010677
+      chat:
+        options:
+          model: qwen-plus
+# springdoc-openapi
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -13,8 +21,12 @@ springdoc:
     - group: 'default'
       paths-to-match: '/**'
       packages-to-scan: com.itheima.aiagent.controller
-# knife4j???????????????
+# knife4j
 knife4j:
   enable: true
   setting:
     language: zh_cn
+server:
+  port: 8123
+  servlet:
+    context-path: /api
