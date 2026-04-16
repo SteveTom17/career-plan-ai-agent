@@ -17,7 +17,7 @@ class CareerPlanAppTest {
     void testChat() {
         String chatId = UUID.randomUUID().toString();
         // 第一轮
-        String message = "你好，我是大三学生";
+        String message = "你好，我叫小明，是一名大三学生";
         String answer = careerPlanApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
         // 第二轮
@@ -25,8 +25,25 @@ class CareerPlanAppTest {
         answer = careerPlanApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
         // 第三轮
-        message = "我是什么职业来着";
+        message = "我叫什么来着";
         answer = careerPlanApp.doChat(message, chatId);
         Assertions.assertNotNull(answer);
+    }
+    @Test
+    void doChatWithReport() {
+        String chatId = UUID.randomUUID().toString();
+        // 第一轮
+        String message = "你好，我是一名大三软件工程的学生，我想毕业后直接找工作，但我不知道该怎么做";
+        CareerPlanApp.CareerPlanReport loveReport = careerPlanApp.doChatWithReport(message, chatId);
+        Assertions.assertNotNull(loveReport);
+    }
+
+    @Test
+    void doChatWithRag() {
+        String chatId = UUID.randomUUID().toString();
+        // 第一轮
+        String message = "你好，我是一名大三软件工程的学生，我想毕业后直接找工作，但我不知道该怎么做";
+        CareerPlanApp.CareerPlanReport loveReport = careerPlanApp.doChatWithReport(message, chatId);
+        Assertions.assertNotNull(loveReport);
     }
 }
