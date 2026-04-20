@@ -1,18 +1,17 @@
 package com.itheima.aiagent.app;
 
-import com.itheima.aiagent.Advisor.MyLoggerAdvisor;
+import com.itheima.aiagent.advisor.MyLoggerAdvisor;
 import com.itheima.aiagent.chatmemory.FileBasedChatMemory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 
 import java.util.List;
 
@@ -95,9 +94,12 @@ public class CareerPlanApp {
         return careerPlanReport;
     }
 
-    //
+    // 本地知识库查找
+//    @Resource
+//    private VectorStore careerPlanAppVectorStore;
+
     @Resource
-    private VectorStore careerPlanAppVectorStore;
+    private Advisor CareerPlanAppCloudAdvisor;
 
     /**
      * 和RAG知识库进行对话
@@ -114,15 +116,13 @@ public class CareerPlanApp {
                 // 开启日志，便于观察效果
                 .advisors(new MyLoggerAdvisor())
                 // 应用知识库问答
-                .advisors(new QuestionAnswerAdvisor(careerPlanAppVectorStore))
+//                .advisors(new QuestionAnswerAdvisor(careerPlanAppVectorStore))
+                // 应用增强检索服务
+                .advisors(CareerPlanAppCloudAdvisor)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
         log.info("content: {}", content);
         return content;
     }
-
-
-
-
 }

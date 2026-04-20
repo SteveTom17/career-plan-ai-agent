@@ -1,4 +1,4 @@
-package com.itheima.aiagent.Advisor;
+package com.itheima.aiagent.advisor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

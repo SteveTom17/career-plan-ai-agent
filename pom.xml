@@ -95,9 +95,16 @@
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-markdown-document-reader</artifactId>
-            <version>1.0.0-M6</version>
+            <version>1.1.4</version>
         </dependency>
         <!-- 查询增强 -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-advisors-vector-store</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+
 
 
     </dependencies>

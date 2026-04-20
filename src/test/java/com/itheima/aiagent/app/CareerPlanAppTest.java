@@ -1,10 +1,17 @@
 package com.itheima.aiagent.app;
 
+import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetriever;
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeDocumentRetrieverOptions;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.rag.Query;
+import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -42,8 +49,8 @@ class CareerPlanAppTest {
     void doChatWithRag() {
         String chatId = UUID.randomUUID().toString();
         // 第一轮
-        String message = "你好，我是一名大三软工学生，保研失败后，有哪些备选方案可以选择";
-        CareerPlanApp.CareerPlanReport loveReport = careerPlanApp.doChatWithReport(message, chatId);
+        String message = "你好，请你介绍马晓荣是谁？";
+        String loveReport = careerPlanApp.doChatWithRag(message, chatId);
         Assertions.assertNotNull(loveReport);
     }
 }
