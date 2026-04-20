@@ -42,7 +42,7 @@ class CareerPlanAppTest {
     void doChatWithRag() {
         String chatId = UUID.randomUUID().toString();
         // 第一轮
-        String message = "你好，我是一名大三软件工程的学生，我想毕业后直接找工作，但我不知道该怎么做";
+        String message = "你好，我是一名大三软工学生，保研失败后，有哪些备选方案可以选择";
         CareerPlanApp.CareerPlanReport loveReport = careerPlanApp.doChatWithReport(message, chatId);
         Assertions.assertNotNull(loveReport);
     }

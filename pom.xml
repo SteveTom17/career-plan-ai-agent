@@ -97,6 +97,9 @@
             <artifactId>spring-ai-markdown-document-reader</artifactId>
             <version>1.0.0-M6</version>
         </dependency>
+        <!-- 查询增强 -->
+
+
     </dependencies>
 
     <build>
