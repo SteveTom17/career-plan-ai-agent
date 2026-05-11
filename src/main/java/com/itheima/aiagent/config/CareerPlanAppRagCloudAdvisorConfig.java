@@ -37,7 +37,7 @@ class CareerPlanAppRagCloudAdvisorConfig {
     public Advisor careerPlanAppRagCloudAdvisor() {
         DashScopeApi dashScopeApi = dashScopeApi();
         System.out.println("获取到的apikey为 :" +  dashScopeApi);
-        final String KNOWLEDGE_INDEX = "职业规划智能助手";
+        final String KNOWLEDGE_INDEX = "career-plan-ai-agent";
         DocumentRetriever documentRetriever = new DashScopeDocumentRetriever(dashScopeApi,
                  DashScopeDocumentRetrieverOptions.builder()
                      .withIndexName(KNOWLEDGE_INDEX)

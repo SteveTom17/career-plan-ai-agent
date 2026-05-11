@@ -9,6 +9,13 @@ spring:
       chat:
         options:
           model: qwen-plus
+#    基于pgsql的向量数据库存储
+#    vectorstore:
+#      pgvector:
+#        index-type: HNSW
+#        dimensions: 1024
+#        distance-type: cosine-distance
+#        max-document-batch-size: 10000
 # springdoc-openapi
 springdoc:
   swagger-ui:

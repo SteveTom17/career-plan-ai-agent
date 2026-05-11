@@ -104,9 +104,41 @@
             <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
-
-
-
+<!--        &lt;!&ndash; SpringAiAlibaba提供的向量存储 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud.ai</groupId>-->
+<!--            <artifactId>spring-ai-alibaba-starter</artifactId>-->
+<!--            <version>1.0.0-M6.1</version>-->
+<!--        </dependency>-->
+        <!-- 自动注入方式，云数据库pgvector对应的依赖 -->
+        <!-- Source: https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-vector-store-pgvector -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>-->
+<!--            <version>2.0.0-M4</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+        <!-- 手动注入方式，云数据库pgvector对应的依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-pgvector-store</artifactId>
+            <version>1.0.0-M6</version>
+        </dependency>
+        <!--DocumentReader HTML解析器-->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-jsoup-document-reader</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>

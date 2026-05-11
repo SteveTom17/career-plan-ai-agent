@@ -2,6 +2,8 @@ package com.itheima.aiagent.app;
 
 import com.itheima.aiagent.advisor.MyLoggerAdvisor;
 import com.itheima.aiagent.chatmemory.FileBasedChatMemory;
+import com.itheima.aiagent.rag.CareerPlanAppVectorStoreConfig;
+import com.itheima.aiagent.rag.PgVectorVectorStoreConfig;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -10,6 +12,8 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 
@@ -88,18 +92,21 @@ public class CareerPlanApp {
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .advisors(
+                        QuestionAnswerAdvisor.builder(careerPlanAppVectorStore).build()
+                )
                 .call()
                 .entity(CareerPlanReport.class);
         log.info("CareerPlanReport: {}", careerPlanReport);
         return careerPlanReport;
     }
 
-    // 本地知识库查找
-//    @Resource
-//    private VectorStore careerPlanAppVectorStore;
+//     本地知识库查找
+    @Resource
+    private VectorStore careerPlanAppVectorStore;
 
     @Resource
-    private Advisor CareerPlanAppCloudAdvisor;
+    private Advisor careerPlanAppRagCloudAdvisor;
 
     /**
      * 和RAG知识库进行对话
@@ -117,8 +124,12 @@ public class CareerPlanApp {
                 .advisors(new MyLoggerAdvisor())
                 // 应用知识库问答
 //                .advisors(new QuestionAnswerAdvisor(careerPlanAppVectorStore))
-                // 应用增强检索服务
-                .advisors(CareerPlanAppCloudAdvisor)
+//                .advisors(
+//                        QuestionAnswerAdvisor.builder(careerPlanAppVectorStore).build()
+//                )
+//                 应用增强检索服务
+//                .advisors(CareerPlanAppCloudAdvisor)
+                .advisors(careerPlanAppRagCloudAdvisor)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

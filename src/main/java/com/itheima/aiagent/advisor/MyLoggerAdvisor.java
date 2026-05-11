@@ -1,5 +1,6 @@
 package com.itheima.aiagent.advisor;
 
+import com.alibaba.cloud.ai.dashscope.rag.DashScopeCloudStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClientMessageAggregator;
@@ -54,5 +55,4 @@ public class MyLoggerAdvisor implements CallAdvisor, StreamAdvisor {
 	private void logResponse(ChatClientResponse chatClientResponse) {
 		logger.debug("response: {}", chatClientResponse);
 	}
-
 }
