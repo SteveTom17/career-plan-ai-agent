@@ -37,3 +37,6 @@ server:
   port: 8123
   servlet:
     context-path: /api
+# search API
+search-api:
+  api-key: your_api_key
