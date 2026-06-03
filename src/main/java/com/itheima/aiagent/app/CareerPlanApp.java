@@ -3,6 +3,7 @@ package com.itheima.aiagent.app;
 import com.itheima.aiagent.advisor.MyLoggerAdvisor;
 import com.itheima.aiagent.chatmemory.FileBasedChatMemory;
 
+import io.modelcontextprotocol.client.McpClient;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -157,5 +158,4 @@ public class CareerPlanApp {
         log.info("content: {}", content);
         return content;
     }
-
 }

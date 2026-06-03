@@ -160,6 +160,11 @@
             <version>9.6.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- 电子邮箱通知工具 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -4,6 +4,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 
@@ -50,4 +51,5 @@ public class WebSearchTool {
             return "Error searching Baidu: " + e.getMessage();
         }
     }
+
 }

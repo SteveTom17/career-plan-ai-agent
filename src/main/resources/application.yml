@@ -9,6 +9,18 @@ spring:
       chat:
         options:
           model: qwen-plus
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 你的邮箱@qq.com
+    password: 你的SMTP授权码
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
 #    基于pgsql的向量数据库存储
 #    vectorstore:
 #      pgvector:
@@ -40,3 +52,7 @@ server:
 # search API
 search-api:
   api-key: your_api_key
+# 修改输出日志的级别
+logging:
+  level:
+    org.springframework.ai: DEBUG

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: image-search-mcp-server
+# 通过此处动态的指定激活的配置
+  profiles:
+    active: stdio,dev
+server:
+  port: 8127
