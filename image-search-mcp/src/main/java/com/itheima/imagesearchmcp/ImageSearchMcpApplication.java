@@ -13,6 +13,7 @@ public class ImageSearchMcpApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ImageSearchMcpApplication.class, args);
 	}
+
 	@Bean
 	public ToolCallbackProvider imageSearchTools(ImageSearchTool imageSearchTool) {
 		return MethodToolCallbackProvider.builder()

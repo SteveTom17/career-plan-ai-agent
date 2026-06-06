@@ -3,6 +3,6 @@ spring:
     name: image-search-mcp-server
 # 通过此处动态的指定激活的配置
   profiles:
-    active: stdio,dev
+    active: sse,dev
 server:
   port: 8127

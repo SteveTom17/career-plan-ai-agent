@@ -79,5 +79,12 @@ class CareerPlanAppTest {
         String answer = careerPlanApp.doChatWithTools(message, chatId);
         Assertions.assertNotNull(answer);
     }
+    @Test
+    void doChatWithMcp() {
+        // 测试图片搜索 MCP
+        String message = "帮我搜索一些哄另一半开心的图片";
+        String answer =  careerPlanApp.doChatWithMcp(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
 
 }
