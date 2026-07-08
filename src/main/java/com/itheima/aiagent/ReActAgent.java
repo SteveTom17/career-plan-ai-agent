@@ -1,5 +1,6 @@
 package com.itheima.aiagent;
 
+import com.itheima.aiagent.model.AgentState;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,6 +36,8 @@ public abstract class ReActAgent extends BaseAgent {
         try {
             boolean shouldAct = think();
             if (!shouldAct) {
+                // 防止无限循环，对于一个问题重复解决，不调用终止工具，直接修改状态就行
+                setState(AgentState.FINISHED);
                 return "思考完成 - 无需行动";
             }
             return act();

@@ -2,7 +2,6 @@ package com.itheima.aiagent.tools;
 
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbacks;
-import org.springframework.ai.tool.execution.ToolExecutionExceptionProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +24,7 @@ public class ToolRegistration {
         TerminalOperationTool terminalOperationTool = new TerminalOperationTool();
         PDFGenerationTool pdfGenerationTool = new PDFGenerationTool();
         TerminateTool terminateTool = new TerminateTool();
+        //ImageSearchTool imageSearchTool = new ImageSearchTool();
         return ToolCallbacks.from(
             fileOperationTool,
             webSearchTool,

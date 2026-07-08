@@ -13,7 +13,7 @@ spring:
       api-key: your-apikey
       chat:
         options:
-          model: glm-5.1
+          model: glm-5.2
   application:
     name: ai-agent
   profiles:
