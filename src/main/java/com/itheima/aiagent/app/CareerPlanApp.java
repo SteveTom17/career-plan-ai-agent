@@ -1,9 +1,12 @@
 package com.itheima.aiagent.app;
 
+import com.alibaba.cloud.ai.dashscope.agent.DashScopeAgentOptions;
+import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
+import com.alibaba.dashscope.aigc.multimodalconversation.MultiModalConversation;
 import com.itheima.aiagent.advisor.MyLoggerAdvisor;
 import com.itheima.aiagent.chatmemory.FileBasedChatMemory;
 
-import io.modelcontextprotocol.client.McpClient;
+
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -70,6 +73,9 @@ public class CareerPlanApp {
                         MessageChatMemoryAdvisor.builder(chatMemory).build(),
                         new MyLoggerAdvisor()
                 )
+                .defaultOptions(DashScopeChatOptions.builder()
+                        .withMultiModel(true)
+                        .build())
                 .build();
 
     }
@@ -156,6 +162,28 @@ public class CareerPlanApp {
                 .chatResponse();
         String content = response.getResult().getOutput().getText();
         log.info("content: {}", content);
+        return content;
+    }
+    /**
+     * 基于 MCP 协议的对话，支持调用 MCP 工具（如图片搜索等）
+     * @param message 用户消息
+     * @param chatId 会话 ID，用于记忆管理
+     * @return AI 回复内容
+     */
+    public String doChatWithMcp(String message, String chatId) {
+        ChatResponse response = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec
+                        .param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .advisors(new MyLoggerAdvisor())          // 记录日志，便于调试
+                .toolCallbacks(allTools)                 // 注册所有工具（包含 MCP 工具）
+                .call()
+                .chatResponse();
+
+        String content = response.getResult().getOutput().getText();
+        log.info("MCP 对话响应: {}", content);
         return content;
     }
 }

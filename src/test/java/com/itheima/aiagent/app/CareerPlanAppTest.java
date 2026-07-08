@@ -80,9 +80,9 @@ class CareerPlanAppTest {
         Assertions.assertNotNull(answer);
     }
     @Test
-    void doChatWithMcp() {
+    void doChatWithMcp(String message, String chatId) {
         // 测试图片搜索 MCP
-        String message = "帮我搜索一些哄另一半开心的图片";
+        message = "帮我搜索一些哄另一半开心的图片";
         String answer =  careerPlanApp.doChatWithMcp(message, chatId);
         Assertions.assertNotNull(answer);
     }

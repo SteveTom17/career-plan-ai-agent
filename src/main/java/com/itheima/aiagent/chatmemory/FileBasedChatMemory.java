@@ -19,7 +19,6 @@ import java.util.Objects;
  * 基于文件持久化的对话记忆
  */
 public class FileBasedChatMemory implements ChatMemory {
-
     private final String baseDir;
 
     private static final ThreadLocal<Kryo> KRYO = ThreadLocal.withInitial(() -> {
