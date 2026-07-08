@@ -5,10 +5,12 @@ import com.itheima.aiagent.app.CareerPlanApp;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallback;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/ai")
@@ -22,6 +24,17 @@ public class AiController {
 
     @Resource
     private ChatModel dashscopeChatModel;
+
+    /**
+     * 返回Flux响应对象
+     * @param message
+     * @param chatId
+     * @return
+     */
+    @GetMapping(value = "/career_plan_app/chat/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<String> doChatWithCareerPlanAppSSE(String message, String chatId) {
+        return careerPlanApp.doChatByStream(message, chatId);
+    }
 
     @GetMapping("/career_plan_app/chat/sync")
     public String doChatWithCareerAppSync(String message, String chatId) {
