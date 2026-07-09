@@ -19,6 +19,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -151,9 +152,10 @@ public class CareerPlanApp {
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志，便于观察效果
                 .advisors(new MyLoggerAdvisor())
-                //应用知识库问答
+                //应用知识库问答,基于PGSQL实现
                 //.advisors(new QuestionAnswerAdvisor(careerPlanAppVectorStore))
                 .advisors(knowledgeAdvisor())
+                //.advisors(new org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor(careerPlanAppVectorStore))
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

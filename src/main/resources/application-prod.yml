@@ -1,23 +1,12 @@
 spring:
   ai:
-    mcp:
-      client:
-        sse:
-          connections:
-            server1:
-              url:http://localhost:8127
-        # 以下是通过SSE方式
-#         stdio:
-#            servers-configuration: classpath:mcp-servers.json
     dashscope:
-      api-key: your-apikey
+      api-key: ${DASHSCOPE_API_KEY:your-apikey}
       chat:
         options:
           model: qwen-max
   application:
     name: ai-agent
-  profiles:
-    active: local
 
   mail:
     host: smtp.qq.com
@@ -61,7 +50,7 @@ server:
     context-path: /api
 # search API
 search-api:
-  api-key: your_api_key
+  api-key: ${SEARCH_API_KEY:your_api_key}
 # 修改输出日志的级别
 logging:
   level:
