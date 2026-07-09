@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ai")
 public class AiController {
@@ -40,6 +42,12 @@ public class AiController {
     public String doChatWithCareerAppSync(String message, String chatId) {
         return careerPlanApp.doChat(message, chatId);
     }
+
+    @GetMapping("/career_plan_app/rag/search")
+    public List<String> searchCareerPlanAppKnowledge(String query) {
+        return careerPlanApp.searchLocalKnowledge(query);
+    }
+
     /**
      * 流式调用 Manus 超级智能体
      *
