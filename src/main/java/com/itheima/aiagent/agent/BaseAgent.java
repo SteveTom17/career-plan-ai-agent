@@ -1,6 +1,6 @@
-package com.itheima.aiagent;
+package com.itheima.aiagent.agent;
 
-import com.itheima.aiagent.model.AgentState;
+import com.itheima.aiagent.agent.model.AgentState;
 import com.networknt.schema.utils.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

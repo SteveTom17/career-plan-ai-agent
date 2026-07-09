@@ -1,11 +1,11 @@
-spring:
+qspring:
   ai:
-#    mcp:
-#      client:
-#        sse:
-#          connections:
-#            server1:
-#              url:http://localhost:8127
+    mcp:
+      client:
+        sse:
+          connections:
+            server1:
+              url:http://localhost:8127
         # 以下是通过SSE方式
 #         stdio:
 #            servers-configuration: classpath:mcp-servers.json
@@ -13,7 +13,7 @@ spring:
       api-key: your-apikey
       chat:
         options:
-          model: qwen-plus
+          model: qwen-max
   application:
     name: ai-agent
   profiles:

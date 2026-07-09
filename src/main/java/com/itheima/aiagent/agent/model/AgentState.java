@@ -1,4 +1,4 @@
-package com.itheima.aiagent.model;
+package com.itheima.aiagent.agent.model;
 
 /**
  * 代理执行状态的枚举类

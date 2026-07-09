@@ -1,6 +1,6 @@
 package com.itheima.aiagent.controller;
 
-import com.itheima.aiagent.YuManus;
+import com.itheima.aiagent.agent.YuManus;
 import com.itheima.aiagent.app.CareerPlanApp;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.model.ChatModel;

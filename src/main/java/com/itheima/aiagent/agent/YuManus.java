@@ -1,4 +1,4 @@
-package com.itheima.aiagent;
+package com.itheima.aiagent.agent;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;

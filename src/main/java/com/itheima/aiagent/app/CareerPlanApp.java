@@ -1,8 +1,6 @@
 package com.itheima.aiagent.app;
 
-import com.alibaba.cloud.ai.dashscope.agent.DashScopeAgentOptions;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
-import com.alibaba.dashscope.aigc.multimodalconversation.MultiModalConversation;
 import com.itheima.aiagent.advisor.MyLoggerAdvisor;
 import com.itheima.aiagent.chatmemory.FileBasedChatMemory;
 
@@ -75,7 +73,6 @@ public class CareerPlanApp {
                         new MyLoggerAdvisor()
                 )
                 .defaultOptions(DashScopeChatOptions.builder()
-                        .withMultiModel(true)
                         .build())
                 .build();
 
@@ -132,14 +129,14 @@ public class CareerPlanApp {
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志，便于观察效果
                 .advisors(new MyLoggerAdvisor())
-                // 应用知识库问答
-//                .advisors(new QuestionAnswerAdvisor(careerPlanAppVectorStore))
-//                .advisors(
-//                        QuestionAnswerAdvisor.builder(careerPlanAppVectorStore).build()
-//                )
+                 //应用知识库问答
+                //.advisors(new QuestionAnswerAdvisor(careerPlanAppVectorStore))
+                .advisors(
+                        QuestionAnswerAdvisor.builder(careerPlanAppVectorStore).build()
+                )
 //                 应用增强检索服务
 //                .advisors(CareerPlanAppCloudAdvisor)
-                .advisors(careerPlanAppRagCloudAdvisor)
+//                .advisors(careerPlanAppRagCloudAdvisor)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

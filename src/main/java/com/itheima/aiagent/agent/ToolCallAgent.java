@@ -1,8 +1,8 @@
-package com.itheima.aiagent;
+package com.itheima.aiagent.agent;
 
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
-import com.itheima.aiagent.model.AgentState;
+import com.itheima.aiagent.agent.model.AgentState;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;

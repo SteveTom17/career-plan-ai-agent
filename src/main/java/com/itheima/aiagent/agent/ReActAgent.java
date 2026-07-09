@@ -1,4 +1,4 @@
-package com.itheima.aiagent;
+package com.itheima.aiagent.agent;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
