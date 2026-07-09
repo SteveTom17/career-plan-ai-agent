@@ -1,6 +1,6 @@
 package com.itheima.aiagent.controller;
 
-import org.springframework.stereotype.Controller;
+import com.itheima.aiagent.common.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
     @GetMapping
-    public String health(){
-        return "health";
+    public ApiResponse<String> health(){
+        return ApiResponse.success("health");
     }
 }

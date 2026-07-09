@@ -3,6 +3,8 @@ package com.itheima.aiagent.app;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.itheima.aiagent.advisor.MyLoggerAdvisor;
 import com.itheima.aiagent.chatmemory.FileBasedChatMemory;
+import com.itheima.aiagent.common.ErrorCode;
+import com.itheima.aiagent.exception.BusinessException;
 
 
 import jakarta.annotation.Resource;
@@ -19,8 +21,8 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -105,6 +107,7 @@ public class CareerPlanApp {
 
     }
     public String doChat(String message, String chatId) {
+        validateChatRequest(message, chatId);
         ChatResponse response = chatClient
                 .prompt()
                 .user(message)
@@ -118,6 +121,7 @@ public class CareerPlanApp {
         return content;
     }
     public CareerPlanReport doChatWithReport(String message, String chatId) {
+        validateChatRequest(message, chatId);
         CareerPlanReport careerPlanReport = chatClient
                 .prompt()
                 .system(SYSTEM_PROMPT + "每次对话后都要生成职业规划结果，标题为{用户名}的职业规划报告，内容为建议列表")
@@ -145,6 +149,7 @@ public class CareerPlanApp {
      * @return
      */
     public String doChatWithRag(String message, String chatId) {
+        validateChatRequest(message, chatId);
         ChatResponse chatResponse = chatClient
                 .prompt()
                 .user(message)
@@ -167,6 +172,7 @@ public class CareerPlanApp {
      * AI调用工具的能力
      */
     public String doChatWithTools(String message, String chatId) {
+        validateChatRequest(message, chatId);
         ChatResponse response = chatClient
                 .prompt()
                 .user(message)
@@ -188,6 +194,7 @@ public class CareerPlanApp {
      * @return AI 回复内容
      */
     public String doChatWithMcp(String message, String chatId) {
+        validateChatRequest(message, chatId);
         ChatResponse response = chatClient
                 .prompt()
                 .user(message)
@@ -210,6 +217,7 @@ public class CareerPlanApp {
      * @return
      */
     public Flux<String> doChatByStream(String message, String chatId) {
+        validateChatRequest(message, chatId);
         return chatClient
                 .prompt()
                 .user(message)
@@ -222,6 +230,9 @@ public class CareerPlanApp {
     }
 
     public List<String> searchLocalKnowledge(String query) {
+        if (!StringUtils.hasText(query)) {
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "query 不能为空");
+        }
         return careerPlanAppVectorStore
                 .similaritySearch(SearchRequest.builder()
                         .query(query)
@@ -241,5 +252,14 @@ public class CareerPlanApp {
                         .build())
                 .promptTemplate(KNOWLEDGE_PROMPT_TEMPLATE)
                 .build();
+    }
+
+    private void validateChatRequest(String message, String chatId) {
+        if (!StringUtils.hasText(message)) {
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "message 不能为空");
+        }
+        if (!StringUtils.hasText(chatId)) {
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "chatId 不能为空");
+        }
     }
 }

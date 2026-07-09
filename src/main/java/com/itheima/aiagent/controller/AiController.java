@@ -2,6 +2,9 @@ package com.itheima.aiagent.controller;
 
 import com.itheima.aiagent.agent.YuManus;
 import com.itheima.aiagent.app.CareerPlanApp;
+import com.itheima.aiagent.common.ApiResponse;
+import com.itheima.aiagent.common.ErrorCode;
+import com.itheima.aiagent.exception.BusinessException;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallback;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -39,13 +43,13 @@ public class AiController {
     }
 
     @GetMapping("/career_plan_app/chat/sync")
-    public String doChatWithCareerAppSync(String message, String chatId) {
-        return careerPlanApp.doChat(message, chatId);
+    public ApiResponse<String> doChatWithCareerAppSync(String message, String chatId) {
+        return ApiResponse.success(careerPlanApp.doChat(message, chatId));
     }
 
     @GetMapping("/career_plan_app/rag/search")
-    public List<String> searchCareerPlanAppKnowledge(String query) {
-        return careerPlanApp.searchLocalKnowledge(query);
+    public ApiResponse<List<String>> searchCareerPlanAppKnowledge(String query) {
+        return ApiResponse.success(careerPlanApp.searchLocalKnowledge(query));
     }
 
     /**
@@ -56,6 +60,9 @@ public class AiController {
      */
     @GetMapping("/manus/chat")
     public SseEmitter doChatWithManus(String message) {
+        if (!StringUtils.hasText(message)) {
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "message 不能为空");
+        }
         YuManus yuManus = new YuManus(allTools, dashscopeChatModel);
         return yuManus.runStream(message);
     }
