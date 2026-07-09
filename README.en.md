@@ -1,210 +1,239 @@
-# AI-Agent
+<div align="center">
+  <p><a href="./README.md">中文</a> | English</p>
+  <h1>AI-Agent</h1>
+  <p>
+    <strong>A career planning agent application built with Spring AI Alibaba and Qwen</strong>
+  </p>
+  <p>
+    AI Chat | RAG | Tool Calling | Manus Agent | MCP Image Search | Vue Frontend
+  </p>
 
-An intelligent Agent application framework based on Spring AI + Qwen API
+  <p>
+    <img src="https://img.shields.io/badge/Spring%20Boot-3.5.13-green" alt="Spring Boot">
+    <img src="https://img.shields.io/badge/Spring%20AI%20Alibaba-1.1.2.0-blue" alt="Spring AI Alibaba">
+    <img src="https://img.shields.io/badge/Java-21+-orange" alt="Java">
+    <img src="https://img.shields.io/badge/Vue-3.x-42b883" alt="Vue">
+  </p>
+
+  <p>
+    <a href="#project-overview">Overview</a> |
+    <a href="#features">Features</a> |
+    <a href="#project-structure">Structure</a> |
+    <a href="#quick-start">Quick Start</a> |
+    <a href="#api-endpoints">API</a> |
+    <a href="#extension-guide">Extension</a>
+  </p>
+</div>
 
 ## Project Overview
 
-AI-Agent is an intelligent Agent application built on the Spring AI framework and the Qwen (DashScope) large language model. It provides a rich set of tools, RAG (Retrieval-Augmented Generation) capabilities, and conversation memory management features, suitable for building AI-driven applications.
+**AI-Agent** is an intelligent agent application built with **Spring AI Alibaba**, **Spring Boot**, and **Qwen DashScope**. It focuses on career planning scenarios and provides synchronous chat, streaming chat, local knowledge retrieval, tool calling, and a ReAct-style Manus Agent.
+
+The project includes career planning knowledge documents for RAG-enhanced answers about postgraduate exams, recommendation-based admission, and employment. It also provides tools for web search, web scraping, file operations, terminal execution, PDF generation, resource downloading, and email notification.
+
+## Features
+
+| Feature | Description |
+| :--- | :--- |
+| Career Planning Agent | Supports multi-turn consulting, structured suggestions, and session memory. |
+| Streaming Response | Uses SSE to stream model responses to the frontend. |
+| RAG | Loads Markdown documents from `src/main/resources/document` and builds a local vector knowledge base. |
+| Tool Calling | Registers search, scraping, file, terminal, PDF, and download tools through Spring AI `@Tool`. |
+| Manus Agent | Provides a multi-step agent flow based on BaseAgent, ReActAgent, and ToolCallAgent. |
+| MCP Extension | Includes the `image-search-mcp` module for image search through the Pexels API. |
+| Frontend and Backend Separation | Provides Spring Boot APIs and a Vue 3 + Vite frontend. |
+| API Documentation | Integrates SpringDoc and Knife4j for API inspection and debugging. |
 
 ## Technology Stack
 
-- **Java 17+**
-- **Spring Boot 3.x**
-- **Spring AI** - Spring ecosystem framework for AI applications
-- **Qwen API** - Alibaba Cloud's large language model service
-- **Kryo** - High-performance serialization library (used for chat history storage)
-- **Maven** - Project build tool
+| Type | Technology |
+| :--- | :--- |
+| Backend | Spring Boot 3.5.13 |
+| AI Framework | Spring AI, Spring AI Alibaba 1.1.2.0 |
+| LLM | Qwen DashScope, default model `qwen-plus` |
+| Vector Retrieval | SimpleVectorStore, PGVector-related dependencies |
+| Document Readers | Spring AI Markdown Document Reader, Jsoup Document Reader |
+| Tool Ecosystem | Spring AI Tool Calling, MCP |
+| Frontend | Vue 3, Vue Router, Axios, Vite |
+| Build Tools | Maven, npm |
 
-## Core Features
+## Project Structure
 
-### 🤖 AI Conversation Capabilities
-- Intelligent conversations powered by Qwen
-- Support for streaming output
-- Conversation history memory management
-
-### 🛠️ Toolset
-- **WebSearchTool** - Baidu search engine querying
-- **WebScrapingTool** - Web page content scraping
-- **FileOperationTool** - File read/write operations
-- **TerminalOperationTool** - Terminal command execution
-- **PDFGenerationTool** - PDF file generation
-- **ResourceDownloadTool** - Resource downloading
-- **EmailNoticeUtil** - Email notifications (login alerts, registration welcome)
-
-### 📚 RAG (Retrieval-Augmented Generation)
-- Supports multiple vector stores:
-  - In-memory vector store
-  - PGVector vector store
-- Document loaders support Markdown and HTML formats
-
-### 💾 Conversation Memory
-- File-based storage of conversation history
-- Support for multi-session management
-
-### 🔌 MCP Service
-- Provides support for the Model Context Protocol (MCP)
-- Includes an image search MCP service (calls the Pexels API)
-
-## Module Structure
-
-```
+```text
 ai-agent/
-├── src/main/java/com/itheima/aiagent/
-│   ├── AiAgentApplication.java          # Main application entry
-│   ├── advisor/                        # Interceptors/Advisors
-│   │   └── MyLoggerAdvisor.java         # Logging interceptor
-│   ├── app/                           # Business applications
-│   │   └── CareerPlanApp.java          # Career planning application
-│   ├── chatmemory/                    # Conversation memory
-│   │   └── FileBasedChatMemory.java    # File-based storage
-│   ├── config/                        # Configuration classes
-│   ├── controller/                    # Controllers
-│   ├── demo/invoke/                   # Example code
-│   ├── rag/                          # RAG-related components
-│   ├── tools/                        # Tool classes
-│   └── utils/                        # Utility methods
-├── image-search-mcp/                 # Image search MCP module
-└── pom.xml                          # Maven configuration
+|-- src/main/java/com/itheima/aiagent/
+|   |-- AiAgentApplication.java          # Backend entry point
+|   |-- advisor/                         # ChatClient advisors and logging
+|   |-- agent/                           # BaseAgent, ReActAgent, Manus Agent
+|   |-- app/                             # Career planning business agent
+|   |-- chatmemory/                      # File-based chat memory
+|   |-- common/                          # Common responses and error codes
+|   |-- config/                          # Spring and RAG configuration
+|   |-- controller/                      # REST and SSE endpoints
+|   |-- exception/                       # Global exception handling
+|   |-- rag/                             # Document loading and vector store config
+|   |-- tools/                           # Agent-callable tools
+|   `-- utils/                           # Utility methods
+|-- src/main/resources/
+|   |-- application.yml                  # Application configuration
+|   |-- mcp-servers.json                 # MCP server configuration example
+|   `-- document/                        # Career planning RAG documents
+|-- ai-agent-fronted/                    # Vue 3 frontend project
+|-- image-search-mcp/                    # Image search MCP module
+|-- Dockerfile
+`-- pom.xml
 ```
 
 ## Quick Start
 
-### 1. Clone the Project
+### 1. Requirements
+
+- JDK 21+
+- Maven 3.9+ or the bundled `mvnw`
+- Node.js 18+ and npm
+- A valid DashScope API key
+- Optional: search API key, Pexels API key, SMTP auth code, PostgreSQL/PGVector
+
+### 2. Clone the Project
 
 ```bash
 git clone https://gitee.com/tonysteve/ai-agent.git
 cd ai-agent
 ```
 
-### 2. Configure API Key
+### 3. Configure Backend
 
-Set the Qwen API key in `application.yml`:
+Edit `src/main/resources/application.yml`:
 
 ```yaml
 spring:
   ai:
     dashscope:
-      api-key: your-api-key
+      api-key: your-dashscope-api-key
+      chat:
+        options:
+          model: qwen-plus
+
+search-api:
+  api-key: your-search-api-key
 ```
 
-### 3. Build and Run
+To enable email notification, configure:
+
+```yaml
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: your-email@qq.com
+    password: your-smtp-auth-code
+    protocol: smtps
+```
+
+### 4. Start Backend
 
 ```bash
-./mvnw clean package -DskipTests
 ./mvnw spring-boot:run
 ```
 
-## Configuration Details
+The backend runs at:
 
-### Core Configuration Options
-
-| Configuration Key | Description |
-|-------------------|-------------|
-| `spring.ai.dashscope.api-key` | Qwen API Key |
-| `search-api.api-key` | Search API Key |
-| `spring.mail.username` | Sender email address |
-| `pexels.api-key` | Pexels API Key (for image search) |
-
-### Tool Configuration
-
-Tool classes are automatically registered into the Agent system via the `@Tool` annotation. Each tool includes descriptive documentation.
-
-## Usage Examples
-
-### Basic Conversation
-
-```java
-@Autowired
-private ChatClient chatClient;
-
-public String chat(String message) {
-    return chatClient.prompt()
-        .user(message)
-        .call()
-        .content();
-}
+```text
+http://localhost:8123/api
 ```
 
-### Using Tools
+API documentation:
 
-```java
-@Autowired
-private ToolCallback[] allTools;
-
-public String chatWithTools(String message) {
-    return chatClient.prompt()
-        .user(message)
-        .tools(allTools)
-        .call()
-        .content();
-}
+```text
+http://localhost:8123/api/swagger-ui.html
 ```
 
-### RAG Query
+### 5. Start Frontend
 
-```java
-@Resource
-private VectorStore vectorStore;
-
-public String ragQuery(String question) {
-    return chatClient.prompt()
-        .user(question)
-        .vectorStore(vectorStore)
-        .call()
-        .content();
-}
+```bash
+cd ai-agent-fronted
+npm install
+npm run dev
 ```
 
-## Extending Development
+## API Endpoints
 
-### Adding a New Tool
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/ai/career_plan_app/chat/sync` | GET | Synchronous career planning chat. Parameters: `message`, `chatId`. |
+| `/api/ai/career_plan_app/chat/sse` | GET | Streaming career planning chat. Parameters: `message`, `chatId`. |
+| `/api/ai/career_plan_app/rag/search` | GET | Search the local career planning knowledge base. Parameter: `query`. |
+| `/api/ai/manus/chat` | GET | Run the Manus Agent for multi-step tasks. Parameter: `message`. |
 
-1. Create a tool class and annotate it with `@Component`
-2. Mark public methods with the `@Tool` annotation
-3. Annotate parameters with `@ToolParam`
+Example:
+
+```bash
+curl "http://localhost:8123/api/ai/career_plan_app/chat/sync?message=Should I pursue postgraduate study or employment?&chatId=demo"
+```
+
+## Configuration
+
+| Key | Description |
+| :--- | :--- |
+| `spring.ai.dashscope.api-key` | DashScope API key. |
+| `spring.ai.dashscope.chat.options.model` | Default chat model, currently `qwen-plus`. |
+| `search-api.api-key` | Search service key used by WebSearchTool. |
+| `spring.mail.username` | Email sender account. |
+| `spring.mail.password` | SMTP authorization code. |
+| `server.port` | Backend port, default `8123`. |
+| `server.servlet.context-path` | Backend context path, default `/api`. |
+
+## Extension Guide
+
+### Add a New Tool
+
+1. Create a tool class in the `tools` package.
+2. Mark model-callable methods with `@Tool`.
+3. Describe parameters with `@ToolParam`.
+4. Register the tool instance in `ToolRegistration`.
 
 ```java
 @Component
 public class MyCustomTool {
-    @Tool(description = "Tool description")
-    public String myMethod(@ToolParam(description = "Parameter description") String param) {
-        // Business logic
-        return result;
+
+    @Tool(description = "Tool capability description")
+    public String run(@ToolParam(description = "Input text") String input) {
+        return "Result: " + input;
     }
 }
 ```
 
-### Adding a New RAG Data Source
+### Add RAG Documents
 
-Create a `DocumentLoader` implementation:
+Place new Markdown documents in:
 
-```java
-@Component
-public class MyDocumentLoader {
-    public List<Document> load() {
-        // Document loading logic
-        return documents;
-    }
-}
+```text
+src/main/resources/document/
 ```
+
+On startup, `CareerPlanAppDocumentLoader` loads these documents into the career planning vector knowledge base.
+
+### Connect a New MCP Server
+
+Use the `image-search-mcp` module and `src/main/resources/mcp-servers.json` as references for connecting external MCP servers to the agent tool ecosystem.
 
 ## Testing
-
-The project includes comprehensive unit and integration tests:
 
 ```bash
 ./mvnw test
 ```
 
+## Contributing
+
+Issues and pull requests are welcome. Please run tests and update related documentation before submitting changes.
+
 ## License
 
-This project is intended solely for learning and communication purposes.
-
-## Contributions
-
-Issues and Pull Requests are welcome!
+This project is intended for learning, communication, and demonstration. Please verify production licensing based on your actual dependencies and use case.
 
 ## Acknowledgments
 
 - [Spring AI](https://spring.io/projects/spring-ai)
-- [Qwen](https://dashscope.aliyuncs.com/)
+- [Spring AI Alibaba](https://github.com/alibaba/spring-ai-alibaba)
+- [Qwen DashScope](https://dashscope.aliyuncs.com/)
+- [spring-ai-alibaba/DataAgent](https://github.com/spring-ai-alibaba/DataAgent)
